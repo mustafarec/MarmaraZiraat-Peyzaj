@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "310305639418",
+    "project_id": "marmaraziraat-b719e",
+    "storage_bucket": "marmaraziraat-b719e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:310305639418:android:0f83cdd16d41c3024b7243",
+        "android_client_info": {
+          "package_name": "com.example.marmara_ziraat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "310305639418-7uu42fdk15lei48lkqlovjj54ruve30h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnFW60-3gdXdWzaT40Rd0MbUZMygG0kPk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "310305639418-7uu42fdk15lei48lkqlovjj54ruve30h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
