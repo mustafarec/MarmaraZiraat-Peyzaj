@@ -19,7 +19,6 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   late PersistentTabController _controller;
 
-
   void onTapNav(int index) {
     setState(() {
       _selectedIndex = index;
@@ -50,7 +49,7 @@ class _HomePageState extends State<HomePage> {
         activeColorPrimary: AppColor.mainColor,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
-    /*  PersistentBottomNavBarItem(
+      /*  PersistentBottomNavBarItem(
         icon: const Icon(Icons.search),
         title: ("Arama"),
         activeColorPrimary: AppColor.mainColor,
@@ -76,6 +75,7 @@ class _HomePageState extends State<HomePage> {
     return PersistentTabView(
       context,
       controller: _controller,
+
       screens: _buildScreens(),
       items: _navBarsItems(),
       confineInSafeArea: true,
@@ -87,8 +87,13 @@ class _HomePageState extends State<HomePage> {
       hideNavigationBarWhenKeyboardShows:
           true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
       decoration: NavBarDecoration(
-        borderRadius: BorderRadius.circular(10.0),
         colorBehindNavBar: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.shade500,
+            blurRadius: 5,
+          ),
+        ],
       ),
       popAllScreensOnTapOfSelectedTab: true,
       popActionScreens: PopActionScreensType.all,

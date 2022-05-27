@@ -25,8 +25,6 @@ class Product {
       });
     }
   }
-
-
 }
 
 class ProductModel {
@@ -56,9 +54,8 @@ class ProductModel {
     stars = json["stars"];
     img = json["img"];
     location = json["location"];
-    createdAt = json["createdAt"];
-    updateAt = json["updateAt"];
-    typeId = json["typeId"];
-
+    createdAt = json["created_at"];
+    updateAt = json["update_at"];
+    typeId = int.parse(json["type_id"]);
   }
 }

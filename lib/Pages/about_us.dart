@@ -30,7 +30,7 @@ class AboutUS extends StatelessWidget {
           children: [
             //Icon
             Image.asset(
-              "images/Marmaraziraat - Kopya.png",
+              "images/GÜNCEL_LOGO.png",
               height: 150,
               fit: BoxFit.fill,
             ),
@@ -136,10 +136,11 @@ class AboutUS extends StatelessWidget {
                         size: Dimensions.height10 * 5,
                       ),
                       textButton: TextButton(
-                        onPressed: () async{
-                          const url = "https://www.google.com.tr/maps/dir//Bah%C3%A7e%C5%9Fehir+2.+K%C4%B1s%C4%B1m,+MARMARA+Z%C4%B0RAAT+-+PEYZAJ,+Z%C4%B0RA%C4%B0+%C4%B0LA%C3%87LAR+-+G%C3%BCbre-Bah%C3%A7e+Alet+Makinalar%C4%B1-COMPO+G%C3%BCbre,+Ho%C5%9Fdere-Bah%C3%A7e%C5%9Fehir+Yolu,+Ba%C5%9Fak%C5%9Fehir%2F%C4%B0stanbul/@41.0675747,28.668472,20z/data=!4m9!4m8!1m0!1m5!1m1!1s0x14b5589b61feffb7:0xf83563edf7bb7cc!2m2!1d28.6687241!2d41.067656!3e0?hl=tr";
+                        onPressed: () async {
+                          const url =
+                              "https://www.google.com.tr/maps/dir//Bah%C3%A7e%C5%9Fehir+2.+K%C4%B1s%C4%B1m,+MARMARA+Z%C4%B0RAAT+-+PEYZAJ,+Z%C4%B0RA%C4%B0+%C4%B0LA%C3%87LAR+-+G%C3%BCbre-Bah%C3%A7e+Alet+Makinalar%C4%B1-COMPO+G%C3%BCbre,+Ho%C5%9Fdere-Bah%C3%A7e%C5%9Fehir+Yolu,+Ba%C5%9Fak%C5%9Fehir%2F%C4%B0stanbul/@41.0675747,28.668472,20z/data=!4m9!4m8!1m0!1m5!1m1!1s0x14b5589b61feffb7:0xf83563edf7bb7cc!2m2!1d28.6687241!2d41.067656!3e0?hl=tr";
 
-                          if(await canLaunch(url)){
+                          if (await canLaunch(url)) {
                             await launch(url);
                           }
                         },

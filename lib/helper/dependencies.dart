@@ -1,43 +1,13 @@
 import 'package:get/get.dart';
-import 'package:marmara_ziraat/controller/Fungisit_controller.dart';
-import 'package:marmara_ziraat/controller/akarisit_controller.dart';
-import 'package:marmara_ziraat/controller/bahce_sulama_controller.dart';
-import 'package:marmara_ziraat/controller/gubre_product_controller.dart';
-import 'package:marmara_ziraat/controller/herbisit_controller.dart';
-import 'package:marmara_ziraat/controller/ilac_controller.dart';
-import 'package:marmara_ziraat/controller/insektisit_controller.dart';
-import 'package:marmara_ziraat/controller/makas_controller.dart';
-import 'package:marmara_ziraat/controller/makine_controller.dart';
-import 'package:marmara_ziraat/controller/mollosit_controller.dart';
 import 'package:marmara_ziraat/controller/popular_product_controller.dart';
-import 'package:marmara_ziraat/controller/sulama_malzemleri_controller.dart';
-import 'package:marmara_ziraat/controller/tohum_controller.dart';
 import 'package:marmara_ziraat/controller/tum_urunler.dart';
-import 'package:marmara_ziraat/controller/yapistirici_controller.dart';
-import 'package:marmara_ziraat/controller/yaprak_gubreleri_controller.dart';
 import 'package:marmara_ziraat/data/api/api_client.dart';
-import 'package:marmara_ziraat/data/repository/akarisit_repo.dart';
-import 'package:marmara_ziraat/data/repository/bahce_sulama_repo.dart';
-import 'package:marmara_ziraat/data/repository/fungisit_repo.dart';
-import 'package:marmara_ziraat/data/repository/gubre_repo.dart';
-import 'package:marmara_ziraat/data/repository/herbisit_repo.dart';
-import 'package:marmara_ziraat/data/repository/ilac_repo.dart';
-import 'package:marmara_ziraat/data/repository/insektisit_repo.dart';
-import 'package:marmara_ziraat/data/repository/makas_repo.dart';
-import 'package:marmara_ziraat/data/repository/makine_repo.dart';
-import 'package:marmara_ziraat/data/repository/mollosit_repo.dart';
 import 'package:marmara_ziraat/data/repository/product_repo.dart';
-import 'package:marmara_ziraat/data/repository/sulama_malzemeleri_repo.dart';
-import 'package:marmara_ziraat/data/repository/tohum_repo.dart';
 import 'package:marmara_ziraat/data/repository/tum_urunler.dart';
-import 'package:marmara_ziraat/data/repository/yapistirici_repo.dart';
-import 'package:marmara_ziraat/data/repository/yaprak_gubreleri_repo.dart';
 import 'package:marmara_ziraat/utils/app_constans.dart';
 
 import '../controller/all_product_controller.dart';
-import '../controller/halk_saglıgı_controller.dart';
 import '../data/repository/all_product_repo.dart';
-import '../data/repository/halk_saglıgı_repo.dart';
 
 Future<void> init() async {
   //api client
@@ -45,39 +15,9 @@ Future<void> init() async {
   // repos
   Get.lazyPut(() => ProductRepo(apiClient: Get.find()));
   Get.lazyPut(() => AllProductRepo(apiClient: Get.find()));
-  Get.lazyPut(() => GubreProductRepo(apiClient: Get.find()));
-  Get.lazyPut(() => IlacProductRepo(apiClient: Get.find()));
-  Get.lazyPut(() => MakineProductRepo(apiClient: Get.find()));
-  Get.lazyPut(() => MakasProductRepo(apiClient: Get.find()));
-  Get.lazyPut(() => TohumProductRepo(apiClient: Get.find()));
   Get.lazyPut(() => TumUrunlerRepo(apiClient: Get.find()));
-  Get.lazyPut(() => HalkSagligiProductRepo(apiClient: Get.find()));
-  Get.lazyPut(() => YaprakGubreleriProductRepo(apiClient: Get.find()));
-  Get.lazyPut(() => BahceMalzemeleriProductRepo(apiClient: Get.find()));
-  Get.lazyPut(() => SulamaMalzemeleriProductRepo(apiClient: Get.find()));
-  Get.lazyPut(() => InsektisitIlacProductRepo(apiClient: Get.find()));
-  Get.lazyPut(() => FungisitIlacProductRepo(apiClient: Get.find()));
-  Get.lazyPut(() => HerbisitIlacProductRepo(apiClient: Get.find()));
-  Get.lazyPut(() => YapistiriciProductRepo(apiClient: Get.find()));
-  Get.lazyPut(() => MollositProductRepo(apiClient: Get.find()));
-  Get.lazyPut(() => AkarisitProductRepo(apiClient: Get.find()));
 //controllers
   Get.lazyPut(() => ProductController(productRepo: Get.find()));
   Get.lazyPut(() => AllProductController(allproductRepo: Get.find()));
-  Get.lazyPut(() => GubreProductController(gubreProductRepo: Get.find()));
-  Get.lazyPut(() => IlacProductController(ilacProductRepo: Get.find()));
-  Get.lazyPut(() => MakasProductController(makasProductRepo: Get.find()));
-  Get.lazyPut(() => MakineProductController(makineProductRepo: Get.find()));
-  Get.lazyPut(() => TohumProductController(tohumProductRepo: Get.find()));
   Get.lazyPut(() => TumUrunlerController(tumUrunlerRepo: Get.find()));
-  Get.lazyPut(() => HalkSagligiProductController(halkSagligiProductRepo: Get.find()));
-  Get.lazyPut(() => YaprakGubreleriProductController(yaprakGubreleriProductRepo: Get.find()));
-  Get.lazyPut(() => BahceMalzemeleriProductController(bahceMalzemeleriProductRepo: Get.find()));
-  Get.lazyPut(() => SulamaMalzemeleriProductController(sulamaMalzemeleriProductRepo: Get.find()));
-  Get.lazyPut(() => InsektisitProductController(insektisitIlacProductRepo: Get.find()));
-  Get.lazyPut(() => FungisitProductController(fungisitIlacProductRepo: Get.find()));
-  Get.lazyPut(() => HerbisitProductController(herbisitIlacProductRepo: Get.find()));
-  Get.lazyPut(() => YapistiriciProductController(yapistiriciProductRepo: Get.find()));
-  Get.lazyPut(() => MollositProductController(mollositProductRepo: Get.find()));
-  Get.lazyPut(() => AkarisitProductController(akarisitProductRepo: Get.find()));
 }

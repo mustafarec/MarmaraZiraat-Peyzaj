@@ -1,13 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:marmara_ziraat/widgets/%C4%B0con_and_Text.dart';
-import 'package:marmara_ziraat/widgets/expandable_product_text.dart';
-
-import '../utils/Colors.dart';
 import '../utils/dimensions.dart';
-import 'Small_text.dart';
 import 'big_text.dart';
 import 'expandable_popular_product_text.dart';
-import 'expandable_text.dart';
 
 class AppColumn extends StatelessWidget {
   final String text;
@@ -19,6 +13,7 @@ class AppColumn extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
         BigText(
           text: text,
@@ -41,7 +36,6 @@ class AppColumn extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ExpandablePupularProductText(text: title),
-
                     ],
                   ),
                 ),
