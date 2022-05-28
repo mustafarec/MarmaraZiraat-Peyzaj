@@ -17,7 +17,13 @@ import 'package:marmara_ziraat/widgets/app_column.dart';
 import '../../controller/tum_urunler.dart';
 
 class MainProductPage extends StatefulWidget {
-  const MainProductPage({Key? key}) : super(key: key);
+  final ScrollController controller;
+  final ValueChanged<bool> onHideChanged;
+  const MainProductPage({
+    Key? key,
+    required this.controller,
+    required this.onHideChanged,
+  }) : super(key: key);
 
   @override
   State<MainProductPage> createState() => _MainProductPageState();
@@ -56,11 +62,20 @@ class _MainProductPageState extends State<MainProductPage> {
           elevation: 0,
           backgroundColor: Colors.white,
           leading: Center(
-            child: Image.asset(
-              "images/GÜNCEL_LOGO.png",
-              height: 40,
-              fit: BoxFit.cover,
-              width: 40,
+            child: InkWell(
+              onTap: () {
+                widget.controller.animateTo(
+                  0,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.linear,
+                );
+              },
+              child: Image.asset(
+                "images/GÜNCEL_LOGO.png",
+                height: 40,
+                fit: BoxFit.cover,
+                width: 40,
+              ),
             ),
           ),
           centerTitle: true,
@@ -72,13 +87,15 @@ class _MainProductPageState extends State<MainProductPage> {
           ),
           actions: [
             IconButton(
-              onPressed: () {
-                showSearch(
+              onPressed: () async {
+                widget.onHideChanged(true);
+                await showSearch(
                   context: context,
                   delegate: SearchBar(
                     Get.find<TumUrunlerController>().tumUrunlerList,
                   ),
                 );
+                widget.onHideChanged(false);
               },
               icon: Icon(
                 Icons.search,
@@ -89,6 +106,7 @@ class _MainProductPageState extends State<MainProductPage> {
           ],
         ),
         body: NestedScrollView(
+          controller: widget.controller,
           physics: const BouncingScrollPhysics(),
           headerSliverBuilder: (_, __) {
             return [
@@ -164,6 +182,7 @@ class _MainProductPageState extends State<MainProductPage> {
                       List<ProductModel> filtereProducts = products
                           .where((element) => element.typeId == e.id)
                           .toList();
+                      print(e.name + "  " + filtereProducts.length.toString());
                       return ProductPageBody(
                         products: filtereProducts,
                       );

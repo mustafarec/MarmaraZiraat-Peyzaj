@@ -6,7 +6,6 @@ import 'package:marmara_ziraat/utils/Colors.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 import '../about_us.dart';
-import '../search.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -18,11 +17,19 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   late PersistentTabController _controller;
+  ScrollController scrollController = ScrollController();
+
+  bool hideNavBar = false;
 
   void onTapNav(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    if (index == 0 && _selectedIndex == 0) {
+      scrollController.animateTo(
+        0,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.linear,
+      );
+    }
+    _selectedIndex = index;
   }
 
   @override
@@ -34,9 +41,16 @@ class _HomePageState extends State<HomePage> {
 
   List<Widget> _buildScreens() {
     return [
-      const MainProductPage(),
+      MainProductPage(
+        controller: scrollController,
+        onHideChanged: (d) {
+          setState(() {
+            hideNavBar = d;
+          });
+        },
+      ),
       //SearchBar(),
-      AboutUS(),
+      const AboutUS(),
       const ContactUs(),
     ];
   }
@@ -75,7 +89,8 @@ class _HomePageState extends State<HomePage> {
     return PersistentTabView(
       context,
       controller: _controller,
-
+      onItemSelected: onTapNav,
+      hideNavigationBar: hideNavBar,
       screens: _buildScreens(),
       items: _navBarsItems(),
       confineInSafeArea: true,

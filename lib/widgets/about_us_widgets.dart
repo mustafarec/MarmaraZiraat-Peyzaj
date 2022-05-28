@@ -1,43 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:marmara_ziraat/utils/dimensions.dart';
-import 'package:marmara_ziraat/widgets/big_text.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'app_icon.dart';
 
 class AboutUSWidget extends StatelessWidget {
-  AppIcon appIcon;
-  TextButton textButton;
+  final AppIcon appIcon;
+  final VoidCallback? onTap;
+  final String text;
 
-  AboutUSWidget({
-    required this.textButton,
+  const AboutUSWidget({
+    this.onTap,
     required this.appIcon,
+    required this.text,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
-      padding: EdgeInsets.only(
-          left: Dimensions.width20,
-          top: Dimensions.width10,
-          bottom: Dimensions.width10),
-      child: Row(
-        children: [
-          appIcon,
-          SizedBox(
-            width: Dimensions.width20,
+      margin: EdgeInsets.zero,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            blurRadius: 3,
+            color: Colors.grey.shade300,
           ),
-          textButton
         ],
       ),
-      decoration: BoxDecoration(color: Colors.white, boxShadow: [
-        BoxShadow(
-            blurRadius: 1,
-            offset: const Offset(0, 2),
-            color: Colors.grey.withOpacity(0.2))
-      ]),
+      child: RawMaterialButton(
+        onPressed: onTap,
+        child: ListTile(
+          leading: appIcon,
+          title: Text(text),
+        ),
+      ),
     );
   }
-
 }
