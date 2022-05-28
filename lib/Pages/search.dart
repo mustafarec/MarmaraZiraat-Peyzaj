@@ -1,17 +1,24 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:marmara_ziraat/Pages/home/Product_page_body.dart';
 import 'package:marmara_ziraat/models/products_model.dart';
-import '../routes/route_helper.dart';
-import '../utils/app_constans.dart';
-import '../utils/dimensions.dart';
-import '../widgets/big_text.dart';
-import '../widgets/expandable_product_text.dart';
 
 class SearchBar extends SearchDelegate {
   List<ProductModel> products;
 
   SearchBar(this.products);
+
+  @override
+  ThemeData appBarTheme(BuildContext context) {
+    return ThemeData.light().copyWith(
+      scaffoldBackgroundColor: Colors.grey.shade100,
+      appBarTheme: AppBarTheme(
+        backgroundColor: Colors.grey.shade100,
+        iconTheme: const IconThemeData(
+          color: Colors.black,
+        ),
+      ),
+    );
+  }
 
   @override
   String get searchFieldLabel => "Arama";
@@ -82,107 +89,6 @@ class SearchBar extends SearchDelegate {
   }
 
   Widget buildProductsListView(List<ProductModel> products) {
-    return ListView.builder(
-        shrinkWrap: true,
-        itemCount: products.length,
-        itemBuilder: (context, index) {
-          ProductModel product = products[index];
-          //    return ListTile(
-          //        contentPadding: EdgeInsets.all(16),
-          //        onTap: () {
-          //          var product = search[index];
-          //          int i = data
-          //              .indexWhere((element) => element.id == product.id);
-          //          Get.toNamed(RouteHelper.getAllProduct(i));
-          //        },
-          //        title: BigText(text: search[index].name!),
-          //        subtitle: SmallText(text: search[index].description!),
-          //        leading: Container(
-          //          width: Dimensions.listViewImgSize / 2,
-          //          height: Dimensions.listViewImgSize,
-          //          decoration: BoxDecoration(
-          //              borderRadius:
-          //                  BorderRadius.circular(Dimensions.radius20),
-          //              color: Colors.black,
-          //              image: DecorationImage(
-          //                  fit: BoxFit.fitHeight,
-          //                  image: CachedNetworkImageProvider(
-          //                      AppConstans.BASE_URL +
-          //                          AppConstans.UPLOAD_URL +
-          //                          search[index].img!))),
-          //        ));
-          //  });
-          return GestureDetector(
-            onTap: () {
-              int i =
-                  products.indexWhere((element) => element.id == product.id);
-              if (i != -1) {
-                Get.toNamed(RouteHelper.productDetail, arguments: product);
-              }
-            },
-            child: Container(
-                margin: EdgeInsets.only(
-                  left: Dimensions.width20,
-                  right: Dimensions.width10,
-                  bottom: Dimensions.height15,
-                ),
-                child: Row(
-                  children: [
-                    //image section
-                    Container(
-                      width: Dimensions.listViewImgSize,
-                      height: Dimensions.listViewImgSize,
-                      decoration: BoxDecoration(
-                        borderRadius:
-                            BorderRadius.circular(Dimensions.radius20),
-                        color: Colors.white38,
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: CachedNetworkImageProvider(
-                            AppConstans.BASE_URL +
-                                AppConstans.UPLOAD_URL +
-                                products[index].img!,
-                          ),
-                        ),
-                      ),
-                    ),
-                    //text section
-                    Expanded(
-                      child: Container(
-                        height: Dimensions.listViewTextContSize,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(Dimensions.radius20),
-                                bottomRight:
-                                    Radius.circular(Dimensions.radius20)),
-                            color: Colors.white),
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              left: Dimensions.width10,
-                              right: Dimensions.width10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              BigText(
-                                text: products[index].name!,
-                              ),
-                              SizedBox(
-                                height: Dimensions.height10,
-                              ),
-                              ExpandableProductText(
-                                  text: products[index].description!),
-                              SizedBox(
-                                height: Dimensions.height10,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                )),
-          );
-        });
+    return ProductPageBody(products: products);
   }
 }

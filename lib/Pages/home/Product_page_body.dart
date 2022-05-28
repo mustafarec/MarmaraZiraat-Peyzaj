@@ -36,35 +36,60 @@ class _ProductPageBodyState extends State<ProductPageBody> {
       physics: const BouncingScrollPhysics(),
       itemCount: allProduct.length,
       itemBuilder: (context, index) {
+        ProductModel product = allProduct[index];
+        String id = product.id.toString();
         return ListTile(
-          onTap: () => Get.toNamed(RouteHelper.productDetail,
-              arguments: allProduct[index]),
+          onTap: () => Get.toNamed(
+            RouteHelper.productDetail,
+            arguments: product,
+          ),
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           leading: ClipRRect(
-            borderRadius: BorderRadius.circular(Dimensions.radius20),
+            borderRadius: BorderRadius.circular(Dimensions.radius15),
             child: SizedBox.square(
               dimension: Dimensions.listViewImgSize / 2,
-              child: AppConstans.cacheNetworkImage(
-                allProduct[index].img!,
-                fit: BoxFit.cover,
+              child: Hero(
+                tag: id + product.hashCode.toString(),
+                child: AppConstans.cacheNetworkImage(
+                  product.img!,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
-          title: Text(
-            allProduct[index].name!.trim(),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
+          title: Hero(
+            tag: id,
+            child: Material(
+              type: MaterialType.transparency,
+              child: Text(
+                product.name!.trim(),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 15,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
           ),
           subtitle: Padding(
             padding: const EdgeInsets.only(top: 5),
-            child: Text(
-              allProduct[index].description!.trim(),
-              maxLines: 2,
-              style: const TextStyle(
-                fontSize: 12,
+            child: Hero(
+              tag: id + product.description!,
+              child: Material(
+                type: MaterialType.transparency,
+                child: Text(
+                  product.description!.trim(),
+                  maxLines: 2,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
-              overflow: TextOverflow.ellipsis,
             ),
           ),
         );

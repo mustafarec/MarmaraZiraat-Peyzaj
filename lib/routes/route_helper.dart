@@ -15,8 +15,10 @@ class RouteHelper {
       name: productDetail,
       page: () {
         ProductModel product = Get.arguments;
+        bool? isPopular = Get.parameters["isPopular"] == "true";
         return ProductDetail(
           product: product,
+          isPopular: isPopular,
         );
       },
       transition: Transition.fadeIn,

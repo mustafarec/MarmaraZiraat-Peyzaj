@@ -58,9 +58,10 @@ class _MainProductPageState extends State<MainProductPage> {
     return DefaultTabController(
       length: AppConstans.categories.length,
       child: Scaffold(
+        backgroundColor: Colors.grey.shade100,
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.grey.shade100,
           leading: Center(
             child: InkWell(
               onTap: () {
@@ -173,21 +174,20 @@ class _MainProductPageState extends State<MainProductPage> {
                     );
                   }).toList()),
               Expanded(
-                child: RefreshIndicator(
-                  onRefresh: _onRefresh,
-                  child: TabBarView(
-                    children: AppConstans.categories.map((e) {
-                      List<ProductModel> products =
-                          Get.find<TumUrunlerController>().tumUrunlerList;
-                      List<ProductModel> filtereProducts = products
-                          .where((element) => element.typeId == e.id)
-                          .toList();
-                      print(e.name + "  " + filtereProducts.length.toString());
-                      return ProductPageBody(
-                        products: filtereProducts,
-                      );
-                    }).toList(),
-                  ),
+                child: TabBarView(
+                  children: AppConstans.categories.map((e) {
+                    List<ProductModel> products =
+                        Get.find<TumUrunlerController>().tumUrunlerList;
+                    List<ProductModel> filteredProducts = [];
+
+                    filteredProducts = products
+                        .where((element) => element.typeId == e.id)
+                        .toList();
+
+                    return ProductPageBody(
+                      products: filteredProducts,
+                    );
+                  }).toList(),
                 ),
               ),
             ],
@@ -224,19 +224,30 @@ class _MainProductPageState extends State<MainProductPage> {
         children: [
           Positioned.fill(
             child: GestureDetector(
-              onTap: () => Get.toNamed(RouteHelper.productDetail),
+              onTap: () => Get.toNamed(
+                RouteHelper.productDetail,
+                arguments: product,
+                parameters: {"isPopular": "true"},
+              ),
               child: Padding(
-                padding: EdgeInsets.fromLTRB(
-                    15, 5, 15, Dimensions.pageViewTextContainer),
+                padding: const EdgeInsets.fromLTRB(15, 5, 15, 15),
                 child: Container(
                   height: Dimensions.pageViewContainer,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(Dimensions.radius30),
                     color: Colors.white,
                   ),
-                  child: AppConstans.cacheNetworkImage(
-                    product.img!,
-                    fit: BoxFit.fitHeight,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      bottom: 80,
+                    ),
+                    child: Hero(
+                      tag: product.id.toString() + "p",
+                      child: AppConstans.cacheNetworkImage(
+                        product.img!,
+                        fit: BoxFit.fitHeight,
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -259,8 +270,8 @@ class _MainProductPageState extends State<MainProductPage> {
                 ],
               ),
               child: AppColumn(
-                text: product.name!,
-                title: product.description!,
+                product: product,
+                isPopular: true,
               ),
             ),
           ),

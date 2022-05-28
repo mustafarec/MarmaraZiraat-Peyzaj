@@ -3,15 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:marmara_ziraat/utils/dimensions.dart';
 
 class BigText extends StatelessWidget {
-  Color? color;
+  final Color? color;
   final String text;
-  double size;
-  TextOverflow overFlow;
-  BigText(
+  final double size;
+  final TextOverflow overFlow;
+  final FontWeight fontWeight;
+  const BigText(
       {Key? key,
       this.color = const Color(0xFF332d2b),
       this.overFlow = TextOverflow.ellipsis,
       this.size = 0,
+      this.fontWeight = FontWeight.w400,
       required this.text})
       : super(key: key);
 
@@ -22,10 +24,11 @@ class BigText extends StatelessWidget {
       maxLines: 1,
       overflow: overFlow,
       style: TextStyle(
-          color: color,
-          fontWeight: FontWeight.w400,
-          fontFamily: "Roboto",
-          fontSize: size == 0 ? Dimensions.font20 : size),
+        color: color,
+        fontWeight: fontWeight,
+        fontFamily: "Roboto",
+        fontSize: size == 0 ? Dimensions.font20 : size,
+      ),
     );
   }
 }

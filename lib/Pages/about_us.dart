@@ -11,6 +11,7 @@ class AboutUS extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade100,
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: [

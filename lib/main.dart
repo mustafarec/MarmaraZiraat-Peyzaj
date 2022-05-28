@@ -34,6 +34,13 @@ class MyApp extends StatelessWidget {
       home: const RootApp(),
       initialRoute: RouteHelper.initial,
       getPages: RouteHelper.routes,
+      theme: ThemeData.light().copyWith(
+        scaffoldBackgroundColor: Colors.grey.shade100,
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.grey.shade100,
+          elevation: 0,
+        ),
+      ),
     );
   }
 }
