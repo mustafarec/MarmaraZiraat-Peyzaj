@@ -89,6 +89,6 @@ class SearchBar extends SearchDelegate {
   }
 
   Widget buildProductsListView(List<ProductModel> products) {
-    return ProductPageBody(products: products);
+    return ProductPageBody(products: products,fromSearch: true,);
   }
 }

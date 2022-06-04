@@ -31,21 +31,21 @@ class AppConstans {
   static const String TOKEN = "DBtoken";
 
   static List<Category> categories = [
+    Category.fromString("8,Tohum"),
     Category.fromString("4,Gübre"),
-    Category.fromString("5,İlaç"),
-    Category.fromString("6,Tohum"),
-    Category.fromString("8,Makas"),
-    Category.fromString("9,Halk Sağlığı"),
     Category.fromString("10,Yaprak Gübresi"),
-    Category.fromString("11,Bahçe Malzemeleri"),
-    Category.fromString("12,Sulama Malzemeleri"),
     Category.fromString("13,İnsektisit(Böcek)"),
     Category.fromString("14,Fungisit(Mantar)"),
     Category.fromString("15,Herbisit(Yabancı Ot)"),
-    Category.fromString("16,Yayıcı Yapıştırıcı"),
-    Category.fromString("17,Mollosit(Salyangoz)"),
     Category.fromString("18,Akarisit(Örümcek)"),
-    Category.fromString("27,Makineler"),
+    Category.fromString("17,Mollosit(Salyangoz)"),
+    Category.fromString("9,Halk Sağlığı"),
+    Category.fromString("16,Yayıcı Yapıştırıcı"),
+    Category.fromString("6,Makineler"),
+    Category.fromString("7,Makas"),
+    Category.fromString("11,Bahçe Malzemeleri"),
+    Category.fromString("12,Sulama Malzemeleri"),
+
   ];
 
   static Widget cacheNetworkImage(String url, {BoxFit fit = BoxFit.cover}) {

@@ -216,7 +216,7 @@ class _MainProductPageState extends State<MainProductPage> {
           val += 1;
         }
         return Transform.scale(
-          scale: max(0.6, val),
+          scale: max(0.85, val),
           child: child!,
         );
       },

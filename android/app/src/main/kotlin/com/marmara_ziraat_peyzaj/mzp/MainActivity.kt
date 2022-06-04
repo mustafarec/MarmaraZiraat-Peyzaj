@@ -1,4 +1,4 @@
-package com.example.marmara_ziraat
+package com.marmara_ziraat_peyzaj.mzp
 
 import io.flutter.embedding.android.FlutterActivity
 

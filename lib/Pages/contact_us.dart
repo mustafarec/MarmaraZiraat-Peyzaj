@@ -17,7 +17,7 @@ class ContactUs extends StatelessWidget {
             // pinned: true,
             stretch: true,
             floating: true,
-            backgroundColor: AppColor.mainColor,
+            backgroundColor: Colors.grey.shade100,
             expandedHeight: MediaQuery.of(context).size.height * 0.4,
             flexibleSpace: FlexibleSpaceBar(
               titlePadding: const EdgeInsets.only(bottom: 19, left: 50),

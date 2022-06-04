@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.marmara_ziraat">
+    package="com.marmara_ziraat_peyzaj.mzp">
     <uses-permission android:name="android.permission.INTERNET"/>
     <queries>
         <!-- If your app opens https URLs -->

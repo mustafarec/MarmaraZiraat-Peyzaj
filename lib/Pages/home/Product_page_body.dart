@@ -7,8 +7,10 @@ import 'package:marmara_ziraat/utils/dimensions.dart';
 
 class ProductPageBody extends StatefulWidget {
   final List<ProductModel> products;
-  const ProductPageBody({
+  bool fromSearch ;
+   ProductPageBody({
     Key? key,
+     this.fromSearch=false,
     required this.products,
   }) : super(key: key);
 
@@ -27,7 +29,7 @@ class _ProductPageBodyState extends State<ProductPageBody> {
       return const Padding(
         padding: EdgeInsets.all(8.0),
         child: Center(
-          child: Text("Hüç Ürün Yok"),
+          child: Text("Hiç Ürün Yok"),
         ),
       );
     }
@@ -37,7 +39,7 @@ class _ProductPageBodyState extends State<ProductPageBody> {
       itemCount: allProduct.length,
       itemBuilder: (context, index) {
         ProductModel product = allProduct[index];
-        String id = product.id.toString();
+        String id = product.id.toString()+(widget.fromSearch?"MZP":"");
         return ListTile(
           onTap: () => Get.toNamed(
             RouteHelper.productDetail,
