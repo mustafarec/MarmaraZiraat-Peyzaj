@@ -1,85 +1,96 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:marmara_ziraat/controller/all_product_controller.dart';
-import 'package:marmara_ziraat/controller/ilac_controller.dart';
-import 'package:marmara_ziraat/controller/tohum_controller.dart';
-import 'package:marmara_ziraat/controller/tum_urunler.dart';
-import 'package:marmara_ziraat/controller/yaprak_gubreleri_controller.dart';
-import 'package:marmara_ziraat/routes/route_helper.dart';
+import 'package:marmara_ziraat/models/products_model.dart';
 import 'package:marmara_ziraat/utils/app_constans.dart';
 import 'package:marmara_ziraat/utils/dimensions.dart';
-import 'package:marmara_ziraat/widgets/app_icon.dart';
 import 'package:marmara_ziraat/widgets/big_text.dart';
-import 'package:marmara_ziraat/widgets/expandable_text.dart';
 
-class AllProductDetail extends StatelessWidget {
-  final int pageId;
-  const AllProductDetail({Key? key, required this.pageId}) : super(key: key);
+class ProductDetail extends StatelessWidget {
+  final ProductModel product;
+  final bool isPopular;
+  const ProductDetail({
+    Key? key,
+    required this.product,
+    this.isPopular = false,
+  }) : super(key: key);
+
+  String get id => product.id.toString() + (isPopular ? "p" : "");
 
   @override
   Widget build(BuildContext context) {
-    var product = Get.find<TumUrunlerController>().tumUrunlerList[pageId];
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            automaticallyImplyLeading: false,
-            toolbarHeight: 70,
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children:  [
-                GestureDetector(onTap: (){
-                  Navigator.of(context).pop(context);
-                }
-                  ,child: const AppIcon(icon: Icons.arrow_back_ios),
+      backgroundColor: Colors.grey.shade100,
+      body: SafeArea(
+        child: CustomScrollView(
+          physics: const BouncingScrollPhysics(),
+          slivers: [
+            SliverAppBar(
+              automaticallyImplyLeading: false,
+              leading: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: const Icon(
+                  Icons.arrow_back_ios_rounded,
+                  color: Colors.black,
                 ),
-
-              ],
-            ),
-            bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(20),
-              child: Container(
-                child: Center(
-                    child: BigText(
-                      text: product.name!,
-                      size: Dimensions.font20,
-                    )),
-                width: double.maxFinite,
-                padding: const EdgeInsets.only(top: 0, bottom: 0),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(Dimensions.radius20),
-                        topRight: Radius.circular(Dimensions.radius20))),
               ),
-            ),
-            backgroundColor: Colors.white,
-            pinned: true,
-            expandedHeight: Dimensions.imgsize,
-            flexibleSpace: FlexibleSpaceBar(
-              background: Image.network(
-                AppConstans.BASE_URL+AppConstans.UPLOAD_URL+product.img!,
-                width: double.maxFinite,
-                fit: BoxFit.fitWidth,
-              ),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  child:  ExpandableText(
-                      text: product.description!
+              backgroundColor: Colors.white,
+              floating: true,
+              stretch: true,
+              expandedHeight: Dimensions.imgsize * 2 / 3,
+              flexibleSpace: FlexibleSpaceBar(
+                background: Hero(
+                  tag: id,
+                  child: AppConstans.cacheNetworkImage(
+                    product.img!,
+                    fit: BoxFit.contain,
                   ),
-                  margin: EdgeInsets.only(
-                      left: Dimensions.width20, right: Dimensions.width20),
                 ),
-              ],
+              ),
             ),
-          )
-        ],
+            SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Hero(
+                          tag: id + product.name!,
+                          child: Material(
+                            type: MaterialType.transparency,
+                            child: BigText(
+                              text: product.name!,
+                              size: Dimensions.font20,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Hero(
+                          tag: id + product.description!,
+                          child: Material(
+                            type: MaterialType.transparency,
+                            child: Text(
+                              product.description!.trim(),
+                              style: TextStyle(
+                                color: Colors.grey.shade700,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

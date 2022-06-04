@@ -1,85 +1,120 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:marmara_ziraat/Pages/product/all_product_detail.dart';
-import 'package:marmara_ziraat/controller/Fungisit_controller.dart';
-import 'package:marmara_ziraat/controller/akarisit_controller.dart';
+import 'package:hive/hive.dart';
 import 'package:marmara_ziraat/controller/all_product_controller.dart';
-import 'package:marmara_ziraat/controller/bahce_sulama_controller.dart';
-import 'package:marmara_ziraat/controller/halk_sagl%C4%B1g%C4%B1_controller.dart';
-import 'package:marmara_ziraat/controller/herbisit_controller.dart';
-import 'package:marmara_ziraat/controller/insektisit_controller.dart';
-import 'package:marmara_ziraat/controller/mollosit_controller.dart';
 import 'package:marmara_ziraat/controller/popular_product_controller.dart';
-import 'package:marmara_ziraat/controller/sulama_malzemleri_controller.dart';
 import 'package:marmara_ziraat/controller/tum_urunler.dart';
-import 'package:marmara_ziraat/controller/tum_urunler_deneme.dart';
-import 'package:marmara_ziraat/controller/yapistirici_controller.dart';
-import 'package:marmara_ziraat/controller/yaprak_gubreleri_controller.dart';
 import 'package:marmara_ziraat/routes/route_helper.dart';
-import 'Pages/home/Product_page_body.dart';
+import 'package:path_provider/path_provider.dart';
 import 'Pages/home/home_page.dart';
-import 'controller/gubre_product_controller.dart';
-import 'controller/ilac_controller.dart';
-import 'controller/makas_controller.dart';
-import 'controller/makine_controller.dart';
-import 'controller/tohum_controller.dart';
 import 'helper/dependencies.dart' as dep;
-import 'Pages/home/main_products_page.dart';
-import 'Pages/product/popular_product_details.dart';
 
+Box<List<String>>? productsBox;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dep.init();
-  // await Firebase.initializeApp();
+  await initHive();
   runApp(const MyApp());
+}
+
+Future<void> initHive() async {
+  String path = (await getApplicationDocumentsDirectory()).path;
+  Hive.init(path);
+  productsBox = await Hive.openBox<List<String>>("productsBox");
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    Get.find<ProductController>().getProductList();
-    Get.find<AllProductController>().getAllProductList();
-    Get.find<GubreProductController>().getGubreProductList();
-    Get.find<IlacProductController>().getIlacProductList();
-    Get.find<MakineProductController>().getMakineProductList();
-    Get.find<MakasProductController>().getMakasProductList();
-    Get.find<TohumProductController>().getTohumProductList();
-    Get.find<TumUrunlerController>().getTumUrunlerList();
-    Get.find<HalkSagligiProductController>().getHalkSagligiProductList();
-    Get.find<YaprakGubreleriProductController>().getYaprakGubreleriProductList();
-    Get.find<BahceMalzemeleriProductController>().getBahceMalzemeleriProductList();
-    Get.find<SulamaMalzemeleriProductController>().getSulamaMalzemeleriProductList();
-    Get.find<InsektisitProductController>().getInsektisitProductList();
-    Get.find<FungisitProductController>().getFungisitProductList();
-    Get.find<HerbisitProductController>().getHerbisitProductList();
-    Get.find<YapistiriciProductController>().getYapistiriciProductList();
-    Get.find<MollositProductController>().getMollositProductList();
-    Get.find<AkarisitProductController>().getAkarisitProductList();
-    Get.lazyPut(()=>TumUrunlerDeneme());
-
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Marmara Ziraat & Peyzaj',
-
-      home: AnimatedSplashScreen(
-        duration: 500,
-        splash: Center(
-          child: Image.asset("images/yazı_marmara.png",),
-        ),
-        nextScreen:const HomePage(),
-
-        splashTransition: SplashTransition.fadeTransition,
-        backgroundColor: Colors.white,
-
-      ),
+      home: const RootApp(),
       initialRoute: RouteHelper.initial,
       getPages: RouteHelper.routes,
+      theme: ThemeData.light().copyWith(
+        scaffoldBackgroundColor: Colors.grey.shade100,
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.grey.shade100,
+          elevation: 0,
+        ),
+      ),
     );
   }
+}
+
+class RootApp extends StatefulWidget {
+  const RootApp({Key? key}) : super(key: key);
+
+  @override
+  State<RootApp> createState() => _RootAppState();
+}
+
+class _RootAppState extends State<RootApp> {
+  @override
+  void initState() {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      fetch();
+    });
+    super.initState();
+  }
+
+  Future<void> fetch() async {
+    await Get.find<ProductController>().getProductList();
+    await Get.find<AllProductController>().getAllProductList();
+    await Get.find<TumUrunlerController>().getTumUrunlerList();
+    Navigator.of(context).pushReplacement(FadePageTransition(const HomePage()));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.white,
+      child: TweenAnimationBuilder<double>(
+        tween: Tween<double>(begin: 0.3, end: 1),
+        duration: const Duration(milliseconds: 1000),
+        curve: Curves.elasticInOut,
+        builder: (_, value, child) {
+          return Transform.scale(
+            scale: value,
+            child: child,
+          );
+        },
+        child: Center(
+          child: Image.asset(
+            "images/yazı_marmara.png",
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class FadePageTransition extends PageRoute {
+  Widget newPage;
+
+  FadePageTransition(this.newPage);
+
+  @override
+  Color? get barrierColor => Colors.transparent;
+
+  @override
+  String? get barrierLabel => null;
+
+  @override
+  Widget buildPage(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation) {
+    return FadeTransition(
+      opacity: animation,
+      child: newPage,
+    );
+  }
+
+  @override
+  bool get maintainState => true;
+
+  @override
+  Duration get transitionDuration => const Duration(milliseconds: 500);
 }

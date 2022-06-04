@@ -6,7 +6,6 @@ import 'package:marmara_ziraat/utils/Colors.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 import '../about_us.dart';
-import '../search.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -18,12 +17,19 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   late PersistentTabController _controller;
+  ScrollController scrollController = ScrollController();
 
+  bool hideNavBar = false;
 
   void onTapNav(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    if (index == 0 && _selectedIndex == 0) {
+      scrollController.animateTo(
+        0,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.linear,
+      );
+    }
+    _selectedIndex = index;
   }
 
   @override
@@ -35,9 +41,16 @@ class _HomePageState extends State<HomePage> {
 
   List<Widget> _buildScreens() {
     return [
-      const MainProductPage(),
+      MainProductPage(
+        controller: scrollController,
+        onHideChanged: (d) {
+          setState(() {
+            hideNavBar = d;
+          });
+        },
+      ),
       //SearchBar(),
-      AboutUS(),
+      const AboutUS(),
       const ContactUs(),
     ];
   }
@@ -50,7 +63,7 @@ class _HomePageState extends State<HomePage> {
         activeColorPrimary: AppColor.mainColor,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
-    /*  PersistentBottomNavBarItem(
+      /*  PersistentBottomNavBarItem(
         icon: const Icon(Icons.search),
         title: ("Arama"),
         activeColorPrimary: AppColor.mainColor,
@@ -76,10 +89,12 @@ class _HomePageState extends State<HomePage> {
     return PersistentTabView(
       context,
       controller: _controller,
+      onItemSelected: onTapNav,
+      hideNavigationBar: hideNavBar,
       screens: _buildScreens(),
       items: _navBarsItems(),
       confineInSafeArea: true,
-      backgroundColor: Colors.white, // Default is Colors.white.
+      backgroundColor: Colors.grey.shade100, // Default is Colors.white.
       handleAndroidBackButtonPress: true, // Default is true.
       resizeToAvoidBottomInset:
           true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
@@ -87,8 +102,13 @@ class _HomePageState extends State<HomePage> {
       hideNavigationBarWhenKeyboardShows:
           true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
       decoration: NavBarDecoration(
-        borderRadius: BorderRadius.circular(10.0),
         colorBehindNavBar: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.shade500,
+            blurRadius: 5,
+          ),
+        ],
       ),
       popAllScreensOnTapOfSelectedTab: true,
       popActionScreens: PopActionScreensType.all,

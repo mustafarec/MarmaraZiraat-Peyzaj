@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:marmara_ziraat/utils/dimensions.dart';
 
 class AppIcon extends StatelessWidget {
   final IconData icon;
@@ -12,7 +11,7 @@ class AppIcon extends StatelessWidget {
       this.backGroundColor = const Color(0xFFfcf4e4),
       this.iconColor = const Color(0xFF756d54),
       this.size = 40,
-      this.iconSize=16})
+      this.iconSize = 16})
       : super(key: key);
 
   @override

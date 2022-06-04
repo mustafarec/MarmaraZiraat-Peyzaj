@@ -1,55 +1,51 @@
 import 'package:flutter/material.dart';
-import 'package:marmara_ziraat/widgets/%C4%B0con_and_Text.dart';
-import 'package:marmara_ziraat/widgets/expandable_product_text.dart';
-
-import '../utils/Colors.dart';
+import 'package:marmara_ziraat/models/products_model.dart';
+import 'package:marmara_ziraat/widgets/Small_text.dart';
 import '../utils/dimensions.dart';
-import 'Small_text.dart';
 import 'big_text.dart';
-import 'expandable_popular_product_text.dart';
-import 'expandable_text.dart';
 
 class AppColumn extends StatelessWidget {
-  final String text;
-  final String title;
-  const AppColumn({Key? key, required this.text, required this.title})
-      : super(key: key);
+  final ProductModel product;
 
+  // Populer ve tüm ürünlerdeki aynı ürünlerin hero tagları eşleşmesin diye
+  final bool isPopular;
+  const AppColumn({
+    Key? key,
+    this.isPopular = false,
+    required this.product,
+  }) : super(key: key);
+  String get id => product.id.toString() + (isPopular ? "p" : "");
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        BigText(
-          text: text,
-          size: Dimensions.font20,
-        ),
-        Row(
-          children: [
-            Expanded(
-              child: Container(
-                height: Dimensions.listViewTextContSizePopular,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(Dimensions.radius20),
-                        bottomRight: Radius.circular(Dimensions.radius20)),
-                    color: Colors.white),
-                child: Padding(
-                  padding: EdgeInsets.only(right: Dimensions.width10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ExpandablePupularProductText(text: title),
-
-                    ],
-                  ),
-                ),
+    return Padding(
+      padding: const EdgeInsets.all(3.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Hero(
+            tag: id + product.name!,
+            child: Material(
+              type: MaterialType.transparency,
+              child: BigText(
+                text: product.name!,
+                size: Dimensions.font20,
+                overFlow: TextOverflow.ellipsis,
               ),
-            )
-          ],
-        ),
-      ],
+            ),
+          ),
+          Hero(
+            tag: id + product.description!,
+            child: Material(
+              type: MaterialType.transparency,
+              child: SmallText(
+                text: product.description!,
+                maxLines: 2,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

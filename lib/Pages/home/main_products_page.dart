@@ -1,113 +1,282 @@
+import 'dart:math';
+
+import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:marmara_ziraat/Pages/home/Product_page_body.dart';
 import 'package:marmara_ziraat/Pages/search.dart';
-import 'package:marmara_ziraat/controller/Fungisit_controller.dart';
-import 'package:marmara_ziraat/controller/akarisit_controller.dart';
 import 'package:marmara_ziraat/controller/all_product_controller.dart';
-import 'package:marmara_ziraat/controller/bahce_sulama_controller.dart';
-import 'package:marmara_ziraat/controller/gubre_product_controller.dart';
-import 'package:marmara_ziraat/controller/halk_sagl%C4%B1g%C4%B1_controller.dart';
-import 'package:marmara_ziraat/controller/herbisit_controller.dart';
-import 'package:marmara_ziraat/controller/ilac_controller.dart';
-import 'package:marmara_ziraat/controller/insektisit_controller.dart';
-import 'package:marmara_ziraat/controller/makas_controller.dart';
-import 'package:marmara_ziraat/controller/makine_controller.dart';
-import 'package:marmara_ziraat/controller/mollosit_controller.dart';
 import 'package:marmara_ziraat/controller/popular_product_controller.dart';
-import 'package:marmara_ziraat/controller/sulama_malzemleri_controller.dart';
-import 'package:marmara_ziraat/controller/tohum_controller.dart';
-import 'package:marmara_ziraat/controller/tum_urunler_deneme.dart';
-import 'package:marmara_ziraat/controller/yapistirici_controller.dart';
-import 'package:marmara_ziraat/controller/yaprak_gubreleri_controller.dart';
+import 'package:marmara_ziraat/models/products_model.dart';
+import 'package:marmara_ziraat/routes/route_helper.dart';
 import 'package:marmara_ziraat/utils/Colors.dart';
+import 'package:marmara_ziraat/utils/app_constans.dart';
 import 'package:marmara_ziraat/utils/dimensions.dart';
-import 'package:marmara_ziraat/widgets/Small_text.dart';
-import 'package:marmara_ziraat/widgets/big_text.dart';
+import 'package:marmara_ziraat/widgets/app_column.dart';
 
 import '../../controller/tum_urunler.dart';
 
-
 class MainProductPage extends StatefulWidget {
-  const MainProductPage({Key? key}) : super(key: key);
+  final ScrollController controller;
+  final ValueChanged<bool> onHideChanged;
+  const MainProductPage({
+    Key? key,
+    required this.controller,
+    required this.onHideChanged,
+  }) : super(key: key);
 
   @override
   State<MainProductPage> createState() => _MainProductPageState();
 }
 
 class _MainProductPageState extends State<MainProductPage> {
-  Future<void> _onRefresh() async{
+  Future<void> _onRefresh() async {
     await Get.find<ProductController>().getProductList();
     await Get.find<AllProductController>().getAllProductList();
-    await Get.find<GubreProductController>().getGubreProductList();
-    await Get.find<IlacProductController>().getIlacProductList();
-    await Get.find<MakineProductController>().getMakineProductList();
-    await Get.find<MakasProductController>().getMakasProductList();
-    await Get.find<TohumProductController>().getTohumProductList();
     await Get.find<TumUrunlerController>().getTumUrunlerList();
-    await Get.find<HalkSagligiProductController>().getHalkSagligiProductList();
-    await Get.find<YaprakGubreleriProductController>().getYaprakGubreleriProductList();
-    await Get.find<BahceMalzemeleriProductController>().getBahceMalzemeleriProductList();
-    await Get.find<SulamaMalzemeleriProductController>().getSulamaMalzemeleriProductList();
-    await Get.find<InsektisitProductController>().getInsektisitProductList();
-    await Get.find<FungisitProductController>().getFungisitProductList();
-    await Get.find<HerbisitProductController>().getHerbisitProductList();
-    await Get.find<YapistiriciProductController>().getYapistiriciProductList();
-    await Get.find<MollositProductController>().getMollositProductList();
-    await Get.find<AkarisitProductController>().getAkarisitProductList();
-    await Get.find<TumUrunlerDeneme>().getuserList();
-
   }
+
+  PageController pageController = PageController(viewportFraction: 0.859);
+  final ValueNotifier<double> _currPageValue = ValueNotifier(0);
+
+  @override
+  void initState() {
+    super.initState();
+    pageController.addListener(() {
+      _currPageValue.value = pageController.page!;
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    pageController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    print("current height is" + MediaQuery.of(context).size.height.toString());
-    return RefreshIndicator(child: Column(
-      children: [
-        Container(
-          margin: EdgeInsets.only(top: Dimensions.height45, bottom: Dimensions.height15),
-          padding: EdgeInsets.only(left: Dimensions.width20, right:  Dimensions.width20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [
-                  Image.asset(
-                    "images/GÜNCEL_LOGO.png",
-                    height: 55,
-                    width: 60,
-                  ),
-                  SmallText(
-                    text: 'Marmara Ziraat & Peyzaj',
-                    color: Colors.black54,
-                    size: 14,
-                  )
-                ],
+    return DefaultTabController(
+      length: AppConstans.categories.length,
+      child: Scaffold(
+        backgroundColor: Colors.grey.shade100,
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.grey.shade100,
+          leading: Center(
+            child: InkWell(
+              onTap: () {
+                widget.controller.animateTo(
+                  0,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.linear,
+                );
+              },
+              child: Image.asset(
+                "images/GÜNCEL_LOGO.png",
+                height: 40,
+                fit: BoxFit.cover,
+                width: 40,
               ),
-              Center(
-                child: Container(
-                  width: Dimensions.height45,
-                  height: Dimensions.height45,
-                  child:  GestureDetector(
-                    onTap: (){
-                      showSearch(context: context, delegate: SearchBar());
-                    },
-                    child: Icon(
-                      Icons.search,
-                      color: Colors.white,
-                      size:Dimensions.iconSize24,
-                    ),
+            ),
+          ),
+          centerTitle: true,
+          title: const Text(
+            'Marmara Ziraat & Peyzaj',
+            style: TextStyle(
+              color: Colors.black,
+            ),
+          ),
+          actions: [
+            IconButton(
+              onPressed: () async {
+                widget.onHideChanged(true);
+                await showSearch(
+                  context: context,
+                  delegate: SearchBar(
+                    Get.find<TumUrunlerController>().tumUrunlerList,
                   ),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular( Dimensions.radius15),
-                      color: AppColor.mainColor),
+                );
+                widget.onHideChanged(false);
+              },
+              icon: Icon(
+                Icons.search,
+                color: Colors.black,
+                size: Dimensions.iconSize24,
+              ),
+            ),
+          ],
+        ),
+        body: NestedScrollView(
+          controller: widget.controller,
+          physics: const BouncingScrollPhysics(),
+          headerSliverBuilder: (_, __) {
+            return [
+              SliverList(
+                delegate: SliverChildListDelegate(
+                  [
+                    GetBuilder<ProductController>(builder: (product) {
+                      return product.isLoaded
+                          ? Column(
+                              children: [
+                                SizedBox(
+                                  height: Dimensions.pageView,
+                                  child: PageView.builder(
+                                      key: const PageStorageKey("populer"),
+                                      pageSnapping: true,
+                                      physics: const BouncingScrollPhysics(),
+                                      controller: pageController,
+                                      itemCount: product.productList.length,
+                                      itemBuilder: (context, position) {
+                                        return _buildPageItem(position,
+                                            product.productList[position]);
+                                      }),
+                                ),
+                                ValueListenableBuilder<double>(
+                                  valueListenable: _currPageValue,
+                                  builder: (_, value, __) {
+                                    return DotsIndicator(
+                                      dotsCount: product.productList.isEmpty
+                                          ? 1
+                                          : product.productList.length,
+                                      position: value,
+                                      decorator: DotsDecorator(
+                                        activeColor: AppColor.mainColor,
+                                        size: const Size.square(9.0),
+                                        activeSize: const Size(18.0, 9.0),
+                                        activeShape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5.0)),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
+                            )
+                          : buildLoadingMetod();
+                    }),
+                  ],
                 ),
-              )
+              ),
+            ];
+          },
+          body: Column(
+            children: [
+              TabBar(
+                  physics: const BouncingScrollPhysics(),
+                  indicatorSize: TabBarIndicatorSize.label,
+                  isScrollable: true,
+                  labelColor: Colors.black,
+                  indicatorWeight: 3,
+                  unselectedLabelColor: Colors.grey,
+                  tabs: AppConstans.categories.map((e) {
+                    return Tab(
+                      text: e.name,
+                    );
+                  }).toList()),
+              Expanded(
+                child: TabBarView(
+                  children: AppConstans.categories.map((e) {
+                    List<ProductModel> products =
+                        Get.find<TumUrunlerController>().tumUrunlerList;
+                    List<ProductModel> filteredProducts = [];
+
+                    filteredProducts = products
+                        .where((element) => element.typeId == e.id)
+                        .toList();
+
+                    return ProductPageBody(
+                      products: filteredProducts,
+                    );
+                  }).toList(),
+                ),
+              ),
             ],
           ),
         ),
-        const Expanded(child: SingleChildScrollView(child: ProductPageBody()))
-      ],
-    ), onRefresh: _onRefresh);
+      ),
+    );
+  }
+
+  Center buildLoadingMetod() {
+    return const Center(
+      child: CircularProgressIndicator(
+        color: AppColor.mainColor,
+      ),
+    );
+  }
+
+  Widget _buildPageItem(int index, ProductModel product) {
+    return ValueListenableBuilder<double>(
+      valueListenable: _currPageValue,
+      builder: (_, value, child) {
+        double val = value - index;
+        if (value > index) {
+          val = 1 - val;
+        } else {
+          val += 1;
+        }
+        return Transform.scale(
+          scale: max(0.6, val),
+          child: child!,
+        );
+      },
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: GestureDetector(
+              onTap: () => Get.toNamed(
+                RouteHelper.productDetail,
+                arguments: product,
+                parameters: {"isPopular": "true"},
+              ),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(15, 5, 15, 15),
+                child: Container(
+                  height: Dimensions.pageViewContainer,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(Dimensions.radius30),
+                    color: Colors.white,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      bottom: 80,
+                    ),
+                    child: Hero(
+                      tag: product.id.toString() + "p",
+                      child: AppConstans.cacheNetworkImage(
+                        product.img!,
+                        fit: BoxFit.fitHeight,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              margin: EdgeInsets.all(Dimensions.width30),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(Dimensions.radius20),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.shade700.withOpacity(0.4),
+                    blurRadius: 3,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: AppColumn(
+                product: product,
+                isPopular: true,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
