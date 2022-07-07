@@ -1,17 +1,17 @@
-class Hastalik {
+class Hastaliklar {
   int? totalSize;
   int? offset;
-  List<Products>? products;
+  List<Hastalik>? hastaliklar;
 
-  Hastalik({this.totalSize, this.offset, this.products});
+  Hastaliklar({this.totalSize, this.offset, this.hastaliklar});
 
-  Hastalik.fromJson(Map<String, dynamic> json) {
+  Hastaliklar.fromJson(Map<String, dynamic> json) {
     totalSize = json['total_size'];
     offset = json['offset'];
-    if (json['products'] != null) {
-      products = <Products>[];
-      json['products'].forEach((v) {
-        products!.add(new Products.fromJson(v));
+    if (json['hastaliklar'] != null) {
+      hastaliklar = <Hastalik>[];
+      json['hastaliklar'].forEach((v) {
+        hastaliklar!.add(new Hastalik.fromJson(v));
       });
     }
   }
@@ -20,14 +20,14 @@ class Hastalik {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['total_size'] = this.totalSize;
     data['offset'] = this.offset;
-    if (this.products != null) {
-      data['products'] = this.products!.map((v) => v.toJson()).toList();
+    if (this.hastaliklar != null) {
+      data['hastaliklar'] = this.hastaliklar!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
-class Products {
+class Hastalik {
   int? id;
   String? description;
   String? img;
@@ -35,7 +35,7 @@ class Products {
   String? updatedAt;
   String? typeId;
 
-  Products(
+  Hastalik(
       {this.id,
         this.description,
         this.img,
@@ -43,7 +43,7 @@ class Products {
         this.updatedAt,
         this.typeId});
 
-  Products.fromJson(Map<String, dynamic> json) {
+  Hastalik.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     description = json['description'];
     img = json['img'];

@@ -16,6 +16,9 @@ class AboutUS extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         slivers: [
           SliverAppBar(
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back_ios_rounded),
+              onPressed: (){Navigator.pop(context);},),
             // pinned: true,
             stretch: true,
             floating: true,

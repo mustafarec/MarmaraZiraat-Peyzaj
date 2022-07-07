@@ -3,11 +3,14 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:marmara_ziraat/controller/all_product_controller.dart';
 import 'package:marmara_ziraat/controller/popular_product_controller.dart';
+import 'package:marmara_ziraat/controller/tum_hastal%C4%B1klar_controller.dart';
+import 'package:marmara_ziraat/controller/tum_hastal%C4%B1klar_type_controller.dart';
 import 'package:marmara_ziraat/controller/tum_urunler.dart';
 import 'package:marmara_ziraat/routes/route_helper.dart';
 import 'package:path_provider/path_provider.dart';
 import 'Pages/home/home_page.dart';
 import 'helper/dependencies.dart' as dep;
+import 'models/products_model.dart';
 
 Box<List<String>>? productsBox;
 Future<void> main() async {
@@ -28,6 +31,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+
       debugShowCheckedModeBanner: false,
       title: 'Marmara Ziraat & Peyzaj',
       home: const RootApp(),
@@ -36,6 +40,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.light().copyWith(
         scaffoldBackgroundColor: Colors.grey.shade100,
         appBarTheme: AppBarTheme(
+          iconTheme: IconThemeData(color: Colors.black),
           backgroundColor: Colors.grey.shade100,
           elevation: 0,
         ),
@@ -54,16 +59,30 @@ class RootApp extends StatefulWidget {
 class _RootAppState extends State<RootApp> {
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       fetch();
     });
     super.initState();
   }
 
   Future<void> fetch() async {
+    bool isFetched=false;
+    Future.delayed(const Duration(seconds: 5),(){
+      if(isFetched==false){
+        List<String>? products = productsBox!.get("allProducts");
+        if (products != null) {
+          Get.find<AllProductController>().allproductList=
+              products.map((e) => ProductModel.fromJson(e)).toList();
+          Navigator.of(context).pushReplacement(FadePageTransition(const HomePage()));
+        }
+      }
+    });
     await Get.find<ProductController>().getProductList();
     await Get.find<AllProductController>().getAllProductList();
     await Get.find<TumUrunlerController>().getTumUrunlerList();
+    await Get.find<AllHastalikController>().getAllHastalikList();
+    await Get.find<AllHastalikTypeController>().getAllHastalikTypeList();
+    isFetched=true;
     Navigator.of(context).pushReplacement(FadePageTransition(const HomePage()));
   }
 

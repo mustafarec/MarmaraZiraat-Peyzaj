@@ -9,6 +9,9 @@ class AllProductController extends GetxController {
   AllProductController({required this.allproductRepo});
   List<ProductModel> _allproductList = [];
   List<ProductModel> get allproductList => _allproductList;
+  void set allproductList (List<ProductModel> list ){
+    _allproductList=list;
+  }
 
   bool _isLoaded = false;
   bool get isLoaded => _isLoaded;

@@ -3,10 +3,14 @@ import 'dart:math';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:marmara_ziraat/Pages/about_us.dart';
+import 'package:marmara_ziraat/Pages/contact_us.dart';
 import 'package:marmara_ziraat/Pages/home/Product_page_body.dart';
+import 'package:marmara_ziraat/Pages/product/diseases.dart';
 import 'package:marmara_ziraat/Pages/search.dart';
 import 'package:marmara_ziraat/controller/all_product_controller.dart';
 import 'package:marmara_ziraat/controller/popular_product_controller.dart';
+import 'package:marmara_ziraat/controller/tum_hastal%C4%B1klar_controller.dart';
 import 'package:marmara_ziraat/models/products_model.dart';
 import 'package:marmara_ziraat/routes/route_helper.dart';
 import 'package:marmara_ziraat/utils/Colors.dart';
@@ -60,32 +64,28 @@ class _MainProductPageState extends State<MainProductPage> {
       child: Scaffold(
         backgroundColor: Colors.grey.shade100,
         appBar: AppBar(
+          iconTheme: const IconThemeData(
+            color: Colors.black
+          ),
           elevation: 0,
           backgroundColor: Colors.grey.shade100,
-          leading: Center(
-            child: InkWell(
-              onTap: () {
-                widget.controller.animateTo(
-                  0,
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.linear,
-                );
-              },
-              child: Image.asset(
-                "images/GÜNCEL_LOGO.png",
-                height: 40,
-                fit: BoxFit.cover,
-                width: 40,
-              ),
-            ),
-          ),
+
           centerTitle: true,
-          title: const Text(
-            'Marmara Ziraat & Peyzaj',
-            style: TextStyle(
-              color: Colors.black,
-            ),
-          ),
+         title: InkWell(
+           onTap: () {
+             widget.controller.animateTo(
+               0,
+               duration: const Duration(milliseconds: 300),
+               curve: Curves.linear,
+             );
+           },
+           child: Image.asset(
+             "images/GÜNCEL_LOGO.png",
+             height: 40,
+             fit: BoxFit.cover,
+             width: 40,
+           ),
+         ),
           actions: [
             IconButton(
               onPressed: () async {
@@ -106,6 +106,47 @@ class _MainProductPageState extends State<MainProductPage> {
             ),
           ],
         ),
+        drawer: Drawer(
+
+          child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+             DrawerHeader(
+              decoration: const BoxDecoration(
+                color: Colors.black12,
+              ),
+              child: Center(
+                child: Image.asset(
+          "images/GÜNCEL_LOGO.png",
+          height: 110,
+          fit: BoxFit.cover,
+          width: 110,
+        ),
+              ),
+            ),
+            ListTile(
+              title: const Text('İletişim'),
+              onTap: () {
+
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> AboutUS()));
+              },
+            ),
+            ListTile(
+              title: const Text('Hakkımızda'),
+              onTap: () {
+
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> ContactUs()));
+              },
+            ),
+            ListTile(
+              title: const Text('Hastalıklar'),
+              onTap: () {
+
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> Diseases(hastaliklar: Get.find<AllHastalikController>().allHastalikList?.hastaliklar??[],)));
+              },
+            ),
+          ],
+        ),),
         body: NestedScrollView(
           controller: widget.controller,
           physics: const BouncingScrollPhysics(),
